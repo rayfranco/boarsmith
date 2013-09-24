@@ -1,0 +1,15 @@
+---
+layout: default.hbs
+---
+<div class="main-container">
+    <div class="main wrapper clearfix">
+    
+        <article>
+            {{#markdown}}
+                {{> body }}
+            {{/markdown}}
+        </article>
+
+        {{ include 'sidenav' }}
+    </div> <!-- #main -->
+</div> <!-- #main-container -->

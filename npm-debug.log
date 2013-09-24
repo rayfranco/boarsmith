@@ -1,0 +1,70 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node',
+1 verbose cli   '/usr/local/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   'assemble-markdown',
+1 verbose cli   '--save-dev' ]
+2 info using npm@1.2.18
+3 info using node@v0.10.5
+4 verbose read json /Users/francois/Sites/test/boarsmith/package.json
+5 verbose read json /Users/francois/Sites/test/boarsmith/node_modules/assemble/package.json
+6 verbose read json /Users/francois/Sites/test/boarsmith/node_modules/connect-livereload/package.json
+7 verbose read json /Users/francois/Sites/test/boarsmith/node_modules/grunt/package.json
+8 verbose read json /Users/francois/Sites/test/boarsmith/node_modules/grunt-contrib-clean/package.json
+9 verbose read json /Users/francois/Sites/test/boarsmith/node_modules/grunt-contrib-compress/package.json
+10 verbose read json /Users/francois/Sites/test/boarsmith/node_modules/grunt-contrib-connect/package.json
+11 verbose read json /Users/francois/Sites/test/boarsmith/node_modules/grunt-contrib-copy/package.json
+12 verbose read json /Users/francois/Sites/test/boarsmith/node_modules/grunt-contrib-watch/package.json
+13 verbose read json /Users/francois/Sites/test/boarsmith/node_modules/grunt-open/package.json
+14 verbose read json /Users/francois/Sites/test/boarsmith/node_modules/matchdep/package.json
+15 verbose from cache /Users/francois/Sites/test/boarsmith/package.json
+16 verbose readDependencies using package.json deps
+17 verbose cache add [ 'assemble-markdown', null ]
+18 verbose cache add name=undefined spec="assemble-markdown" args=["assemble-markdown",null]
+19 verbose parsed url { protocol: null,
+19 verbose parsed url   slashes: null,
+19 verbose parsed url   auth: null,
+19 verbose parsed url   host: null,
+19 verbose parsed url   port: null,
+19 verbose parsed url   hostname: null,
+19 verbose parsed url   hash: null,
+19 verbose parsed url   search: null,
+19 verbose parsed url   query: null,
+19 verbose parsed url   pathname: 'assemble-markdown',
+19 verbose parsed url   path: 'assemble-markdown',
+19 verbose parsed url   href: 'assemble-markdown' }
+20 silly lockFile 69ea84e4-assemble-markdown assemble-markdown
+21 verbose lock assemble-markdown /Users/francois/.npm/69ea84e4-assemble-markdown.lock
+22 silly lockFile 69ea84e4-assemble-markdown assemble-markdown
+23 silly lockFile 69ea84e4-assemble-markdown assemble-markdown
+24 verbose addNamed [ 'assemble-markdown', '' ]
+25 verbose addNamed [ null, '' ]
+26 silly lockFile a6a0e5be-assemble-markdown assemble-markdown@
+27 verbose lock assemble-markdown@ /Users/francois/.npm/a6a0e5be-assemble-markdown.lock
+28 silly addNameRange { name: 'assemble-markdown', range: '', hasData: false }
+29 verbose url raw assemble-markdown
+30 verbose url resolving [ 'https://registry.npmjs.org/', './assemble-markdown' ]
+31 verbose url resolved https://registry.npmjs.org/assemble-markdown
+32 info trying registry request attempt 1 at 16:50:06
+33 http GET https://registry.npmjs.org/assemble-markdown
+34 http 404 https://registry.npmjs.org/assemble-markdown
+35 silly registry.get cb [ 404,
+35 silly registry.get   { server: 'CouchDB/1.3.1 (Erlang OTP/R15B03)',
+35 silly registry.get     date: 'Tue, 24 Sep 2013 14:50:08 GMT',
+35 silly registry.get     'content-type': 'application/json',
+35 silly registry.get     'content-length': '52',
+35 silly registry.get     'cache-control': 'must-revalidate' } ]
+36 silly lockFile a6a0e5be-assemble-markdown assemble-markdown@
+37 silly lockFile a6a0e5be-assemble-markdown assemble-markdown@
+38 error 404 'assemble-markdown' is not in the npm registry.
+38 error 404 You should bug the author to publish it
+38 error 404
+38 error 404 Note that you can also install from a
+38 error 404 tarball, folder, or http url, or git url.
+39 error System Darwin 12.4.0
+40 error command "node" "/usr/local/bin/npm" "install" "assemble-markdown" "--save-dev"
+41 error cwd /Users/francois/Sites/test/boarsmith
+42 error node -v v0.10.5
+43 error npm -v 1.2.18
+44 error code E404
+45 verbose exit [ 1, true ]
