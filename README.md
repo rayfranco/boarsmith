@@ -1,3 +1,5 @@
+Note that this is under developement and not ready for production.
+
 # boarsmith — a frontend site workflow
 
 Boarsmith is a custom site structure and workflow, made for frontend small sites, working with Grunt.js for testing, building and publishing.
