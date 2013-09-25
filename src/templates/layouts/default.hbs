@@ -20,22 +20,18 @@
             <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
         <![endif]-->
 
-        <div class="header-container">
-            <header class="wrapper clearfix">
-                <h1 class="title">{{ pkg.name }}</h1>
-                {{!-- {{ include navbar }} --}}
-            </header>
-        </div>
+        {{> header.hbs}}
 
-        <!-- Add your site or application content here -->
         {{> body }}
 
-        {{!-- {{ include footer }} --}}
+        {{> footer.hbs}}
 
-        {{!-- include javascripts here --}}
+        {{#each scripts.main}}
+            <script src="{{assets}}/{{this}}" type="text/javascript"></script>
+        {{/each}}
 
         <script>
-            var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+            var _gaq=[['_setAccount','{{ config.analytics }}'],['_trackPageview']];
             (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
             g.src='//www.google-analytics.com/ga.js';
             s.parentNode.insertBefore(g,s)}(document,'script'));

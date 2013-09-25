@@ -16,7 +16,7 @@ var mountFolder = function (connect, dir) {
 
 module.exports = function(grunt) {
 
-  // load all grunt tasks
+  // Load all grunt tasks
   grunt.loadNpmTasks('assemble');
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
@@ -24,49 +24,41 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     vendor: grunt.file.readJSON('.bowerrc').directory,
-
+    config: grunt.file.readYAML('src/data/config.yml'),
     // Build HTML from templates and data
     assemble: {
       options: {
         pkg: '<%= pkg %>',
         flatten: true,
+        data: 'src/data/*.{json,yml}',
         ext: '.html',
-        assets: 'www',
         helpers: ['src/templates/helpers/helper-*.js'],
         partials: ['src/templates/partials/**/*.hbs'],
         layoutdir: 'src/templates/layouts',
         layout: 'default.hbs',
-        data: ['src/templates/data/*.{json,yml}']
+        assets: 'www',
       },
       root: {
         options: {
-          ext: '.html',
-          engine: 'handlebars',
-          partials: ['src/templates/partials/**/*.hbs'],
           layout: 'page.hbs'
         },
         files: {'www/': ['src/content/*.md']}
       },
       fr: {
         options: {
-          ext: '.html',
-          engine: 'handlebars',
           layout: 'page.hbs'
         },
         files: {'www/fr/': ['src/content/fr/*.md']}
       },
       en: {
         options: {
-          ext: '.html',
-          engine: 'handlebars',
           layout: 'page.hbs'
         },
         files: {'www/en/': ['src/content/en/*.md']}
       }
     },
 
-    // Before generating any new files,
-    // remove any previously-created files.
+    // Remove previously created files
     clean: {
       dest: ['www']
     },
@@ -89,12 +81,14 @@ module.exports = function(grunt) {
       }
     },
 
+    // Open server in browser
     open: {
       server: {
         url: 'http://localhost:<%= connect.options.port %>'
       }
     },
 
+    // Copy public folder to dest
     copy: {
       assets: {
         files: [
@@ -103,15 +97,101 @@ module.exports = function(grunt) {
       }
     },
 
+    // Watch for changes
     watch: {
-      options: {
+      coffee: {
+        files: 'src/coffee/**/*.coffee',
+        tasks: ['coffee']
+      },
+      sass: {
+        files: ['src/sass/*.{sass,scss}'],
+        tasks: ['sass']
+      },
+      assemble: {
+        files: ['src/content/**/*','src/templates/**/*','src/data/**/*'],
+        tasks: ['assemble']
+      },
+      assets: {
+        files: ['public/**/*'],
+        tasks: ['copy']
+      },
+      livereload: {
+        files: ['www/**/*'],
+        options: {
+          livereload: true
+        }
+      }
+    },
 
+    // Compile Coffeescript files
+    coffee: {
+      dist: {
+        files: [{
+          expand: true,
+          cwd: 'src/coffee',
+          src: '{,*/}*.coffee',
+          dest: 'www/js',
+          ext: '.js'
+        }]
+      }
+    },
+
+    // Compile SASS/SCSS files
+    sass: {
+      dist: {
+        files: [{
+          expand: true,
+          cwd: 'src/sass',
+          src: ['*.{scss,sass}'],
+          dest: 'www/css',
+          ext: '.css'
+        }]
+      }
+    },
+
+    // Allow async task running
+    concurrent: {
+      options: {
+        logConcurrentOutput: true
+      },
+      compile: ['assemble','coffee', 'sass']
+    },
+
+    // Deploy to a zip file
+    compress: {
+      zip: {
+        options: {
+          archive: "<%= pkg.name %>_<%= grunt.template.today('yyyymmddhhMMss') %>.zip"
+        },
+        files: [
+          {expand: true, cwd: 'www/', src: ['**'], dest: '<%= pkg.name %>/'}
+        ]
       }
     }
 
   });
 
+
+
   // Register tasks
+
+  grunt.registerTask('build', function(target) {
+    if (target === 'dev') {
+      // Dev build
+    } else { // Prod build
+      return grunt.task.run(['clean','copy','concurrent:compile']);
+    }
+  });
+
+  grunt.registerTask('deploy', function(target) {
+    if (target === 'ssh') {
+
+    } else if (target === 'rsync') {
+
+    } else { // Zip
+      return grunt.task.run(['build','compress']);
+    }
+  });
 
   grunt.registerTask('server', function (target) {
     if (target === 'dist') {
@@ -119,9 +199,7 @@ module.exports = function(grunt) {
     }
 
     grunt.task.run([
-      'clean',
-      'copy',
-      'assemble',
+      'build',
       'connect:livereload',
       'open',
       'watch'

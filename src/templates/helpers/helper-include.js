@@ -15,8 +15,6 @@
         Handlebars.partials[template] = partial;
       }
 
-      console.log('HOP HOP HOP! arguments :', arguments)
-
       if (!partial) {
         return new Handlebars.SafeString('Partial **' + template + '** not found.');
       }
