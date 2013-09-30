@@ -10,6 +10,12 @@ StaticJS generator uses great technologies for making your workflow simpler, lik
 
 It contains out of the box : pushstate JS routing, handlebar templates system with multilingual friendly Markdown + YAML Front Matter system for publishing articles (provided by Assemble).
 
+## Requirements
+
+For this workflow to work, you need this external dependencies to be installed on your computer :
+
+* Phantomjs ~1.9.2 `homebrew install phantomjs` or [download here](http://phantomjs.org/download.html)
+
 ## Quick start
 
 First install it globally

@@ -149,6 +149,24 @@ module.exports = function(grunt) {
       }
     },
 
+    // Create spritesheets from sprites
+    sprite:{
+      all: {
+        src: ['src/sprites/*.png'],
+        destImg: 'public/img/spritesheet.png',
+        destCSS: 'src/sass/includes/_sprites.scss',
+        engine: 'phantomjs',
+        padding: 2
+      }
+      all2x: {
+        src: ['src/sprites@2x/*.png'],
+        destImg: 'public/img/spritesheet@2x.png',
+        destCSS: 'src/sass/includes/_sprites@2x.scss',
+        engine: 'phantomjs',
+        padding: 2
+      }
+    },
+
     // Allow async task running
     concurrent: {
       options: {
@@ -168,14 +186,12 @@ module.exports = function(grunt) {
         ]
       }
     }
-
   });
-
 
 
   // Register tasks
 
-  grunt.registerTask('build', function(target) {
+  grunt.registerTask('build', function (target) {
     if (target === 'dev') {
       // Dev build
     } else { // Prod build
@@ -183,7 +199,7 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask('deploy', function(target) {
+  grunt.registerTask('deploy', function (target) {
     if (target === 'ssh') {
 
     } else if (target === 'rsync') {
@@ -204,6 +220,13 @@ module.exports = function(grunt) {
       'open',
       'watch'
     ]);
+  });
+
+  grunt.registerTask('screenshot', function () {
+    page.open('http://github.com/', function () {
+        page.render('github.png');
+        phantom.exit();
+    });
   });
 
   // Default tasks to be run.

@@ -1,0 +1,55 @@
+  $fork-x: 0px;
+  $fork-y: 0px;
+  $fork-offset-x: 0px;
+  $fork-offset-y: 0px;
+  $fork-width: 32px;
+  $fork-height: 32px;
+  $fork-total-width: 32px;
+  $fork-total-height: 100px;
+  $fork-image: '../../../public/img/spritesheet.png';
+  $fork: 0px 0px 0px 0px 32px 32px 32px 100px '../../../public/img/spritesheet.png';
+  $github-x: 0px;
+  $github-y: 34px;
+  $github-offset-x: 0px;
+  $github-offset-y: -34px;
+  $github-width: 32px;
+  $github-height: 32px;
+  $github-total-width: 32px;
+  $github-total-height: 100px;
+  $github-image: '../../../public/img/spritesheet.png';
+  $github: 0px 34px 0px -34px 32px 32px 32px 100px '../../../public/img/spritesheet.png';
+  $twitter-x: 0px;
+  $twitter-y: 68px;
+  $twitter-offset-x: 0px;
+  $twitter-offset-y: -68px;
+  $twitter-width: 32px;
+  $twitter-height: 32px;
+  $twitter-total-width: 32px;
+  $twitter-total-height: 100px;
+  $twitter-image: '../../../public/img/spritesheet.png';
+  $twitter: 0px 68px 0px -68px 32px 32px 32px 100px '../../../public/img/spritesheet.png';
+
+  @mixin sprite-width($sprite) {
+    width: nth($sprite, 5);
+  }
+
+  @mixin sprite-height($sprite) {
+    height: nth($sprite, 6);
+  }
+
+  @mixin sprite-position($sprite) {
+    $sprite-offset-x: nth($sprite, 3);
+    $sprite-offset-y: nth($sprite, 4);
+    background-position: $sprite-offset-x  $sprite-offset-y;
+  }
+
+  @mixin sprite-image($sprite) {
+    background-image: url(nth($sprite, 9));
+  }
+
+  @mixin sprite($sprite) {
+    @include sprite-image($sprite);
+    @include sprite-position($sprite);
+    @include sprite-width($sprite);
+    @include sprite-height($sprite);
+  }
