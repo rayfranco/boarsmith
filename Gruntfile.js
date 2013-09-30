@@ -179,7 +179,7 @@ module.exports = function(grunt) {
     compress: {
       zip: {
         options: {
-          archive: "<%= pkg.name %>_<%= grunt.template.today('yyyymmddhhMMss') %>.zip"
+          archive: "www/<%= pkg.name %>_<%= grunt.template.today('yyyymmddhhMMss') %>.zip"
         },
         files: [
           {expand: true, cwd: 'www/', src: ['**'], dest: '<%= pkg.name %>/'}
