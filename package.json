@@ -11,7 +11,7 @@
   "license": "BSD",
   "readmeFilename": "README.md",
   "devDependencies": {
-    "assemble": "~0.4.7",
+    "assemble": "~0.4.8",
     "grunt": "~0.4.1",
     "grunt-contrib-clean": "~0.5.0",
     "grunt-contrib-copy": "~0.4.1",
@@ -25,9 +25,7 @@
     "grunt-contrib-sass": "~0.5.0",
     "grunt-concurrent": "~0.3.1",
     "grunt-spritesmith": "~1.10.1",
-    "phantomjssmith": "~0.1.5"
-  },
-  "dependencies": {
-    "grunt-open": "~0.2.2"
+    "phantomjssmith": "~0.1.5",
+    "grunt-autoshot": "0.0.2"
   }
 }

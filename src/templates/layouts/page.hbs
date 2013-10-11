@@ -5,11 +5,9 @@ layout: default.hbs
     <div class="main wrapper clearfix">
     
         <article>
-            {{#markdown}}
-                {{> body }}
-            {{/markdown}}
+            {{#markdown}}{{> body }}{{/markdown}}
         </article>
 
-        {{> sidenav.hbs }}
+        {{> sidenav }}
     </div> <!-- #main -->
 </div> <!-- #main-container -->
