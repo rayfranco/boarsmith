@@ -17,6 +17,7 @@ var LIVERELOAD_PORT = 35729,
     };
 
 var mountFolder = function (connect, dir) {
+  console.log('MOUNTING: ', dir);
   return connect.static(require('path').resolve(dir));
 };
 
@@ -44,7 +45,7 @@ module.exports = function(grunt) {
         partials: ['src/templates/partials/**/*.hbs'],
         layoutdir: 'src/templates/layouts',
         layout: 'default.hbs',
-        assets: 'www',
+        assets: '<%= path.build.dev %>',
       },
       root: {
         options: {
@@ -83,7 +84,7 @@ module.exports = function(grunt) {
           middleware: function (connect) {
             return [
               lrSnippet,
-              mountFolder(connect, '<%= path.build.dev %>')
+              mountFolder(connect, path.build.dev)
             ];
           }
         }
@@ -139,7 +140,7 @@ module.exports = function(grunt) {
           expand: true,
           cwd: 'src/coffee',
           src: '{,*/}*.coffee',
-          dest: 'www/js',
+          dest: '<%= path.build.dev %>/js',
           ext: '.js'
         }]
       }
@@ -152,7 +153,7 @@ module.exports = function(grunt) {
           expand: true,
           cwd: 'src/sass',
           src: ['*.{scss,sass}'],
-          dest: 'www/css',
+          dest: '<%= path.build.dev %>/css',
           ext: '.css'
         }]
       }
@@ -182,12 +183,12 @@ module.exports = function(grunt) {
       all: {
         options: {
           // necessary config
-          path: 'www/',
+          path: '<%= path.build.dev %>/',
           filename: 'screenshot.png',
           type: 'png',
           // optional config, must set either remote or local
           local: {
-            path: 'www/',
+            path: '<%= path.build.dev %>/',
             port: 8080,
           },
           viewport: ['1024x768','640x1136','768x1024'] // Desktop, iPhone, iPad
@@ -199,10 +200,10 @@ module.exports = function(grunt) {
     compress: {
       zip: {
         options: {
-          archive: "www/<%= pkg.name %>_<%= grunt.template.today('yyyymmddhhMMss') %>.zip"
+          archive: "<%= path.build.dev %>/<%= pkg.name %>_<%= grunt.template.today('yyyymmddhhMMss') %>.zip"
         },
         files: [
-          {expand: true, cwd: 'www/', src: ['**'], dest: '<%= pkg.name %>/'}
+          {expand: true, cwd: '<%= path.build.dev %>/', src: ['**'], dest: '<%= pkg.name %>/'}
         ]
       }
     }
@@ -214,7 +215,8 @@ module.exports = function(grunt) {
     if (target === 'dev') {
       // Dev build
     } else { // Prod build
-      return grunt.task.run(['clean','copy','concurrent:compile','autoshot']);
+      return grunt.task.run(['clean','copy','concurrent:compile']);
+      // return grunt.task.run(['clean','copy','concurrent:compile','autoshot']);
     }
   });
 
