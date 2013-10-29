@@ -1,5 +1,7 @@
 main:
     - vendor/jquery/jquery.js
-    - vendor/underscore/underscore.js
-    - vendor/davis/davis.js
+    - vendor/js-signals/dist/signals.js
+    - vendor/crossroads.js/dist/crossroads.js
+    - vendor/hasher/dist/js/hasher.js
+    - vendor/PreloadJS/lib/preloadjs-NEXT.min.js
     - js/main.js

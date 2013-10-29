@@ -47,7 +47,7 @@ module.exports = function(grunt) {
         layoutdir: 'src/templates/layouts',
         layout: 'default.hbs',
         assets: '<%= path.build.dev %>',
-        plugins: ['src/templates/plugins/data.js']
+        // plugins: ['src/templates/plugins/data.js']
       },
       root: {
         options: {
