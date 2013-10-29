@@ -165,6 +165,7 @@ module.exports = function(grunt) {
         src: ['src/sprites/*.png'],
         destImg: 'public/img/spritesheet.png',
         destCSS: 'src/sass/includes/_sprites.scss',
+        imgPath: '../img/spritesheet.png',
         engine: 'phantomjs',
         padding: 2
       }
