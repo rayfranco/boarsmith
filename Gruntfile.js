@@ -38,7 +38,8 @@ module.exports = function(grunt) {
       options: {
         pkg: '<%= pkg %>',
         flatten: true,
-        data: 'src/data/*.{json,yml}',
+        data: ['src/data/*.{json,yml}'],
+        dataExport: ['routing'], // Data to be exported to a json file
         ext: '.html',
         engine: 'handlebars',
         helpers: ['src/templates/helpers/helper-*.js'],
@@ -46,6 +47,7 @@ module.exports = function(grunt) {
         layoutdir: 'src/templates/layouts',
         layout: 'default.hbs',
         assets: '<%= path.build.dev %>',
+        plugins: ['src/templates/plugins/data.js']
       },
       root: {
         options: {
@@ -59,7 +61,7 @@ module.exports = function(grunt) {
             dest: '<%= path.build.dev %>/'
           },
         ],
-      }
+      },
     },
 
     // Remove previously created files
