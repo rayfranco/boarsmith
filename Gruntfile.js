@@ -51,19 +51,14 @@ module.exports = function(grunt) {
         options: {
           layout: 'page.hbs'
         },
-        files: {'<%= path.build.dev %>': ['src/content/*.md']}
-      },
-      fr: {
-        options: {
-          layout: 'page.hbs'
-        },
-        files: {'<%= path.build.dev %>/fr/': ['src/content/fr/*.md']}
-      },
-      en: {
-        options: {
-          layout: 'page.hbs'
-        },
-        files: {'<%= path.build.dev %>/en/': ['src/content/en/*.md']}
+        files: [
+          {
+            expand: true,
+            cwd: 'src/content/',
+            src: ['**/*.md','**/*.hbs'],
+            dest: '<%= path.build.dev %>/'
+          },
+        ],
       }
     },
 
