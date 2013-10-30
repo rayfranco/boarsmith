@@ -111,7 +111,7 @@ module.exports = function(grunt) {
         tasks: ['coffee']
       },
       sass: {
-        files: ['src/sass/*.{sass,scss}'],
+        files: ['src/sass/**/*.{sass,scss}'],
         tasks: ['sass']
       },
       assemble: {

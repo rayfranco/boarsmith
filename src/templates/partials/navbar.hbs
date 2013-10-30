@@ -1,7 +1,13 @@
 <nav>
+    {{#if lang }}
     <ul>
-        <li><a href="#">nav ul li a</a></li>
-        <li><a href="#">nav ul li a</a></li>
-        <li><a href="#">nav ul li a</a></li>
+        <li><a href="/{{ lang }}">Home</a></li>
+        <li><a href="/{{ lang }}/contact">Contact</a></li>
     </ul>
+    {{else }}
+    <ul>
+        <li><a href="/en">English</a></li>
+        <li><a href="/fr">Français</a></li>
+    </ul>
+    {{/if }}
 </nav>

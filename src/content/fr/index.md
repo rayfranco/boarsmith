@@ -1,5 +1,6 @@
 ---
 title: Bonjour tout le monde !
+lang: fr
 ---
 # Bonjour tout le monde !
 

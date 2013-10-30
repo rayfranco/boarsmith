@@ -1,0 +1,15 @@
+#loader {
+    height: 2px;
+    background: #b3d4fc;
+    width: 100%;
+
+    .inner {
+        -webkit-transition: 1.3s opacity ease-out;
+        -moz-transition: 1.3s opacity ease-out;
+        -o-transition: 1.3s opacity ease-out;
+        transition: 1.3s opacity ease-out; 
+        background: red;
+        height: 100%;
+        width: 0%;
+    }
+}
