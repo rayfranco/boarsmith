@@ -26,9 +26,11 @@
 
         {{> footer.hbs}}
 
+        <!-- build:js /js/main.js -->
         {{#each scripts.main}}
             <script src="{{assets}}/{{this}}" type="text/javascript"></script>
         {{/each}}
+        <!-- endbuild -->
 
         <script>
             var _gaq=[['_setAccount','{{ config.analytics }}'],['_trackPageview']];

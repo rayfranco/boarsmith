@@ -23,6 +23,11 @@ var mountFolder = function (connect, dir) {
 
 module.exports = function(grunt) {
 
+  // Environment settings
+  var env;
+  env = grunt.option('env') || 'dev';
+  if (grunt.option('prod')) { env = 'prod' } // Shortcut --prod
+
   // Load all grunt tasks
   grunt.loadNpmTasks('assemble');
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
@@ -30,6 +35,7 @@ module.exports = function(grunt) {
   // Project configuration.
   grunt.initConfig({
     path: path,
+    env: env,
     pkg: grunt.file.readJSON('package.json'),
     vendor: grunt.file.readJSON('.bowerrc').directory,
     config: grunt.file.readYAML('src/data/config.yml'),
@@ -46,7 +52,7 @@ module.exports = function(grunt) {
         partials: ['src/templates/partials/**/*.hbs'],
         layoutdir: 'src/templates/layouts',
         layout: 'default.hbs',
-        assets: '<%= path.build.dev %>',
+        assets: '<%= path.build[env] %>',
         // plugins: ['src/templates/plugins/data.js']
       },
       root: {
@@ -58,7 +64,7 @@ module.exports = function(grunt) {
             expand: true,
             cwd: 'src/content/',
             src: ['**/*.md','**/*.hbs'],
-            dest: '<%= path.build.dev %>/'
+            dest: '<%= path.build[env] %>'
           },
         ],
       },
@@ -66,8 +72,8 @@ module.exports = function(grunt) {
 
     // Remove previously created files
     clean: {
-      dev: ['<%= path.build.dev %>'],
-      prod: ['<%= path.build.prod %>']
+      env: ['<%= path.build[env] %>'],
+      all: ['<%= path.build.dev %>', '<%= path.build.prod %>']
     },
 
     // Create a Server
@@ -81,7 +87,7 @@ module.exports = function(grunt) {
           middleware: function (connect) {
             return [
               lrSnippet,
-              mountFolder(connect, path.build.dev)
+              mountFolder(connect, path.build[env])
             ];
           }
         }
@@ -99,7 +105,7 @@ module.exports = function(grunt) {
     copy: {
       assets: {
         files: [
-          {expand: true, cwd: 'public/', src: ['**'], dest: '<%= path.build.dev %>'}, // includes files in path
+          {expand: true, cwd: 'public/', src: ['**'], dest: '<%= path.build[env] %>'}, // includes files in path
         ]
       }
     },
@@ -123,7 +129,7 @@ module.exports = function(grunt) {
         tasks: ['copy']
       },
       livereload: {
-        files: ['<%= path.build.dev %>**/*'],
+        files: ['<%= path.build[env] %>**/*'],
         options: {
           livereload: true
         }
@@ -137,7 +143,7 @@ module.exports = function(grunt) {
           expand: true,
           cwd: 'src/coffee',
           src: '{,*/}*.coffee',
-          dest: '<%= path.build.dev %>/js',
+          dest: '<%= path.build[env] %>js',
           ext: '.js'
         }]
       }
@@ -150,11 +156,51 @@ module.exports = function(grunt) {
           expand: true,
           cwd: 'src/sass',
           src: ['*.{scss,sass}'],
-          dest: '<%= path.build.dev %>/css',
+          dest: '<%= path.build[env] %>css',
           ext: '.css'
         }]
       }
     },
+
+    useminPrepare: {
+      html: '<%= path.build[env] %>**/*.html',
+    },
+
+    usemin: {
+      html: ['<%= path.build[env] %>{,*/}*.html', '!<%= path.build[env] %>vendor{,*/}*.html'], // todo: remove vendor html files
+      css: ['<%= path.build[env] %>styles/{,*/}*.css'],
+      options: {
+        dirs: ['<%= path.build[env] %>']
+      }
+    },
+
+    imagemin: {
+      dist: {
+        files: [{
+          expand: true,
+          cwd: '<%= path.build[env] %>img',
+          src: '{,*/}*.{png,jpg,jpeg}',
+          dest: '<%= path.build[env] %>img'
+        }]
+      }
+    },
+
+    cssmin: {
+
+    },
+
+    htmlmin: {
+      dist: {
+        files: [{
+          expand: true,
+          cwd: '<%= path.build[env] %>',
+          src: ['!vendor/**/*.html','**/*.html'],
+          dest: '<%= path.build[env] %>'
+        }]
+      }
+    },
+
+    uglify: { },
 
     // Create spritesheets from sprites
     sprite:{
@@ -173,7 +219,7 @@ module.exports = function(grunt) {
       options: {
         logConcurrentOutput: true
       },
-      compile: ['assemble','coffee', 'sass']
+      compile: ['assemble','coffee', 'sass'],
     },
 
     // Take a screenshot
@@ -181,12 +227,12 @@ module.exports = function(grunt) {
       all: {
         options: {
           // necessary config
-          path: '<%= path.build.dev %>/',
+          path: '<%= path.build[env] %>',
           filename: 'screenshot.png',
           type: 'png',
           // optional config, must set either remote or local
           local: {
-            path: '<%= path.build.dev %>/',
+            path: '<%= path.build[env] %>',
             port: 8080,
           },
           viewport: ['1024x768','640x1136','768x1024'] // Desktop, iPhone, iPad
@@ -198,10 +244,10 @@ module.exports = function(grunt) {
     compress: {
       zip: {
         options: {
-          archive: "<%= path.build.dev %>/<%= pkg.name %>_<%= grunt.template.today('yyyymmddhhMMss') %>.zip"
+          archive: "<%= path.build[env] %><%= pkg.name %>_<%= grunt.template.today('yyyymmddhhMMss') %>.zip"
         },
         files: [
-          {expand: true, cwd: '<%= path.build.dev %>/', src: ['**'], dest: '<%= pkg.name %>/'}
+          {expand: true, cwd: '<%= path.build[env] %>', src: ['**'], dest: '<%= pkg.name %>/'}
         ]
       }
     }
@@ -209,12 +255,11 @@ module.exports = function(grunt) {
 
   // Register tasks
 
-  grunt.registerTask('build', function (target) {
-    if (target === 'dev') {
-      // Dev build
-    } else { // Prod build
-      return grunt.task.run(['clean','copy','concurrent:compile']);
-      // return grunt.task.run(['clean','copy','concurrent:compile','autoshot']);
+  grunt.registerTask('build', function () {
+    if (env === 'prod') { // Prod build
+      return grunt.task.run(['clean:env','copy','concurrent:compile','useminPrepare','imagemin','uglify','usemin']);
+    } else { // Dev build
+      return grunt.task.run(['clean:env','copy','concurrent:compile']);
     }
   });
 
@@ -229,10 +274,6 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('server', function (target) {
-    if (target === 'dist') {
-      return grunt.task.run(['build', 'open', 'connect:dist:keepalive']);
-    }
-
     grunt.task.run([
       'build',
       'connect:livereload',
