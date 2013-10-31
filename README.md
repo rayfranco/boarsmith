@@ -16,7 +16,56 @@ For this workflow to work, you need this external dependencies to be installed o
 
 * Phantomjs ~1.9.2 `homebrew install phantomjs` or [download here](http://phantomjs.org/download.html)
 
-## Quick start
+## Temporary Quick Start
+
+This quick start is used until the yeoman generator is build.
+
+Install NPM modules
+
+    npm install
+    
+Install Bower dependencies    
+    
+    bower install
+    
+Run the demo
+
+	grunt server
+
+Enjoy!
+    
+
+
+## Grunt Tasks
+
+You can test your files (not ready)
+
+	grunt test
+	
+You can build the site
+
+	grunt build 		 # Dev environement
+	grunt build --prod   # Prod environement
+	
+You can build and watch on a node server
+
+	grunt server         # Dev environement
+	grunt server --prod  # Prod environement
+
+you can deploy to zip file, via rsync or event FTP. Make sure your condig is correctly setup before deploying.
+
+	grunt deploy:zip 	# Export to a zipfile
+	grunt deploy:rsync	# Sync with rsync to a remote server via SSH
+	grunt deploy:ftp 	# Push your files to a remote server via FTP
+
+
+
+__Further steps will be used when the generator is ready__
+
+---
+
+
+## Quick start (not ready)
 
 First install it globally
 
@@ -42,8 +91,7 @@ Add your data files in `src/data`
 
 Add all files to be public in `public` folder (will be copied as is to the root of the server)
 
-
-## Yeoman Generator
+## Yeoman Generator (not ready)
 
 The best way to bootstrap your project is to use the Yeoman Generator. You will be ask for details about your project like
 
@@ -59,7 +107,7 @@ The best way to bootstrap your project is to use the Yeoman Generator. You will 
 * List some bower components you want in your projects
 
 
-## Yeoman Tasks
+## Yeoman Tasks (not ready)
 
 You also can add some articles/pages with Yeaoman using
 
@@ -72,32 +120,6 @@ or
 Or fill the `src/data/routes.yml` and then generate your structure
 
 	yo boarsmith:routes:generate
-    
-----
-
-## Grunt Tasks
-
-You can test your files
-
-	grunt test
-	
-You can build the site
-
-	grunt build:dev 	# Dev environement (default)
-	grunt build:test	# Test environement
-	grunt build:prod   # Prod environement
-	
-You can build and watch on a node server
-
-	grunt server
-
-You can 
-
-you can deploy to zip file, via rsync or event FTP. Make sure your condig is correctly setup before deploying.
-
-	grunt deploy:zip 	# Export to a zipfile
-	grunt deploy:rsync	# Sync with rsync to a remote server via SSH
-	grunt deploy:ftp 	# Push your files to a remote server via FTP
 
 
 
