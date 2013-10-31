@@ -7,6 +7,7 @@
 
 // Node.js
 var path  = require('path');
+var YAML  = require('js-yaml'); // Grunt dependency
 
 /**
  * @param  {Object}   config
@@ -18,21 +19,23 @@ module.exports = function(config, callback) {
 
   var options    = config.context;
   var grunt      = config.grunt;
-  var files      = options.dataExport;
+  var page       = options.page;
+  var pages      = options.pages;
   var async      = grunt.util.async;
 
-  if (!files || typeof files === 'undefined') { callback(); return; }
+  async.forEach(pages, function(file, next) {
+      if (page.src !== file.src) {
+        return;
+      }
 
-  async.forEachSeries(files, function(file, next){
+      file.page = YAML.load(file.page);
 
-    if (typeof options[file] !== 'object') { next(); return; }
-
-    var outputDir  = path.join(options.dirname,'data',file)
-
-    grunt.verbose.ok('Generating data file for: '. file);
-    grunt.file.write(outputDir + '.json', JSON.stringify(options[file], null, 2));
-
-  }, function(err) {
-    callback();
+      next();
   });
+
+  callback();
+
+  console.log(pages)
+
+  return page;
 };

@@ -53,7 +53,6 @@ module.exports = function(grunt) {
         layoutdir: 'src/templates/layouts',
         layout: 'default.hbs',
         assets: '<%= path.build[env] %>',
-        // plugins: ['src/templates/plugins/data.js']
       },
       root: {
         options: {
@@ -68,6 +67,21 @@ module.exports = function(grunt) {
           },
         ],
       },
+      data: {
+        options: {
+          layout: false,
+          ext: '.json',
+          plugins: ['src/templates/plugins/data.js']
+        },
+        files: [
+          {
+            expand: true,
+            cwd: 'src/data/',
+            src: ['*.yml'],
+            dest: '<%= path.build[env] %>data/'
+          }
+        ]
+      }
     },
 
     // Remove previously created files
