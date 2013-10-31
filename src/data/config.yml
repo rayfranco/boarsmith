@@ -1,3 +1,10 @@
-url: http://localhost:9000
-analytics: UA-XXXXX-X
-deployStrategy: zip
+dev:
+    url: http://localhost:9000
+    analytics: UA-XXXXX-X
+    deployStrategy: zip
+
+preprod:
+    url: http://localhost:9000
+
+prod:
+    url: http://localhost:9000

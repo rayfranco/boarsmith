@@ -10,9 +10,14 @@
 var LIVERELOAD_PORT = 35729,
     lrSnippet = require('connect-livereload')({ port: LIVERELOAD_PORT }),
     path = {
-      build: {
-        dev: 'build/dev/',
-        prod: 'build/prod/'
+      dev: {
+        build: 'build/dev/'
+      },
+      preprod: {
+        build: 'build/preprod/'
+      },
+      prod: {
+        build: 'build/prod/'
       }
     };
 
@@ -34,11 +39,11 @@ module.exports = function(grunt) {
 
   // Project configuration.
   grunt.initConfig({
-    path: path,
+    path: path[env],
     env: env,
     pkg: grunt.file.readJSON('package.json'),
     vendor: grunt.file.readJSON('.bowerrc').directory,
-    config: grunt.file.readYAML('src/data/config.yml'),
+    config: grunt.file.readYAML('src/data/config.yml')[env],
     // Build HTML from templates and data
     assemble: {
       options: {
@@ -52,7 +57,7 @@ module.exports = function(grunt) {
         partials: ['src/templates/partials/**/*.hbs'],
         layoutdir: 'src/templates/layouts',
         layout: 'default.hbs',
-        assets: '<%= path.build[env] %>',
+        assets: '<%= path.build %>',
       },
       root: {
         options: {
@@ -63,7 +68,7 @@ module.exports = function(grunt) {
             expand: true,
             cwd: 'src/content/',
             src: ['**/*.md','**/*.hbs'],
-            dest: '<%= path.build[env] %>'
+            dest: '<%= path.build %>'
           },
         ],
       },
@@ -78,7 +83,7 @@ module.exports = function(grunt) {
             expand: true,
             cwd: 'src/data/',
             src: ['*.yml'],
-            dest: '<%= path.build[env] %>data/'
+            dest: '<%= path.build %>data/'
           }
         ]
       }
@@ -86,7 +91,7 @@ module.exports = function(grunt) {
 
     // Remove previously created files
     clean: {
-      env: ['<%= path.build[env] %>'],
+      env: ['<%= path.build %>'],
       all: ['<%= path.build.dev %>', '<%= path.build.prod %>']
     },
 
@@ -101,7 +106,7 @@ module.exports = function(grunt) {
           middleware: function (connect) {
             return [
               lrSnippet,
-              mountFolder(connect, path.build[env])
+              mountFolder(connect, path[env].build)
             ];
           }
         }
@@ -119,7 +124,7 @@ module.exports = function(grunt) {
     copy: {
       assets: {
         files: [
-          {expand: true, cwd: 'public/', src: ['**'], dest: '<%= path.build[env] %>'}, // includes files in path
+          {expand: true, cwd: 'public/', src: ['**'], dest: '<%= path.build %>'}, // includes files in path
         ]
       }
     },
@@ -143,7 +148,7 @@ module.exports = function(grunt) {
         tasks: ['copy']
       },
       livereload: {
-        files: ['<%= path.build[env] %>**/*'],
+        files: ['<%= path.build %>**/*'],
         options: {
           livereload: true
         }
@@ -157,7 +162,7 @@ module.exports = function(grunt) {
           expand: true,
           cwd: 'src/coffee',
           src: '{,*/}*.coffee',
-          dest: '<%= path.build[env] %>js',
+          dest: '<%= path.build %>js',
           ext: '.js'
         }]
       }
@@ -170,24 +175,25 @@ module.exports = function(grunt) {
           expand: true,
           cwd: 'src/sass',
           src: ['*.{scss,sass}'],
-          dest: '<%= path.build[env] %>css',
+          dest: '<%= path.build %>css',
           ext: '.css'
         }]
       }
     },
 
     useminPrepare: {
-      html: '<%= path.build[env] %>**/*.html',
+      html: ['<%= path.build %>**/*.html','!<%= path.build %>vendor/**/*.html'],
       options: {
-        dest: '<%= path.build[env] %>'
+        root: '<%= path.build %>',
+        dest: '<%= path.build %>'
       }
     },
 
     usemin: {
-      html: ['<%= path.build[env] %>{,*/}*.html', '!<%= path.build[env] %>vendor{,*/}*.html'], // todo: remove vendor html files
-      css: ['<%= path.build[env] %>styles/{,*/}*.css'],
+      html: ['<%= path.build %>**/*.html', '!<%= path.build %>vendor/**/*.html'],
+      css: ['<%= path.build %>css/**/*.css'],
       options: {
-        dirs: ['<%= path.build[env] %>']
+        dirs: ['<%= path.build %>']
       }
     },
 
@@ -195,9 +201,9 @@ module.exports = function(grunt) {
       dist: {
         files: [{
           expand: true,
-          cwd: '<%= path.build[env] %>img',
+          cwd: '<%= path.build %>img',
           src: '{,*/}*.{png,jpg,jpeg}',
-          dest: '<%= path.build[env] %>img'
+          dest: '<%= path.build %>img'
         }]
       }
     },
@@ -210,14 +216,19 @@ module.exports = function(grunt) {
       dist: {
         files: [{
           expand: true,
-          cwd: '<%= path.build[env] %>',
+          cwd: '<%= path.build %>',
           src: ['!vendor/**/*.html','**/*.html'],
-          dest: '<%= path.build[env] %>'
+          dest: '<%= path.build %>'
         }]
       }
     },
 
-    uglify: { },
+    uglify: {
+      options: {
+        banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - by <%= pkg.author %> ' +
+          '<%= grunt.template.today("yyyy-mm-dd") %> */'
+      }
+    },
 
     // Create spritesheets from sprites
     sprite:{
@@ -244,12 +255,12 @@ module.exports = function(grunt) {
       all: {
         options: {
           // necessary config
-          path: '<%= path.build[env] %>',
+          path: '<%= path.build %>',
           filename: 'screenshot.png',
           type: 'png',
           // optional config, must set either remote or local
           local: {
-            path: '<%= path.build[env] %>',
+            path: '<%= path.build %>',
             port: 8080,
           },
           viewport: ['1024x768','640x1136','768x1024'] // Desktop, iPhone, iPad
@@ -261,11 +272,28 @@ module.exports = function(grunt) {
     compress: {
       zip: {
         options: {
-          archive: "<%= path.build[env] %><%= pkg.name %>_<%= grunt.template.today('yyyymmddhhMMss') %>.zip"
+          archive: "<%= path.build %><%= pkg.name %>_<%= grunt.template.today('yyyymmddhhMMss') %>.zip"
         },
         files: [
-          {expand: true, cwd: '<%= path.build[env] %>', src: ['**'], dest: '<%= pkg.name %>/'}
+          {expand: true, cwd: '<%= path.build %>', src: ['**'], dest: '<%= pkg.name %>/'}
         ]
+      }
+    },
+
+    // Replace absolute paths by fully qualified URLs (until usemin can't handle relative dest option)
+    "string-replace": {
+      dist: {
+        files: {
+          './': '<%= path.build %>**/*.html'
+        },
+        options: {
+          replacements: [
+            {
+              pattern: /(src|href)="\//g,
+              replacement: "$1=\"<%= config.url %>/"
+            }
+          ]
+        }
       }
     }
   });
@@ -273,8 +301,8 @@ module.exports = function(grunt) {
   // Register tasks
 
   grunt.registerTask('build', function () {
-    if (env === 'prod') { // Prod build
-      return grunt.task.run(['clean:env','copy','concurrent:compile','useminPrepare','imagemin','concat','uglify','usemin']);
+    if (env === 'prod' || env === 'preprod') { // Prod/Preprod build
+      return grunt.task.run(['clean:env','copy','concurrent:compile','useminPrepare','imagemin','concat','uglify','usemin','string-replace']);
     } else { // Dev build
       return grunt.task.run(['clean:env','copy','concurrent:compile']);
     }
