@@ -1,4 +1,5 @@
 node_modules
 .sass-cache
+.tmp
 public/vendor
 build
