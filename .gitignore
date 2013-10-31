@@ -3,3 +3,4 @@ node_modules
 .tmp
 public/vendor
 build
+.DS_Store
