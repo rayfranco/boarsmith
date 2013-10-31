@@ -1,12 +1,18 @@
 /* ==========================================================================
    HTML5 Boilerplate styles - h5bp.com (generated via initializr.com)
    ========================================================================== */
+$black: #1D1805;
+$white: #FEFEFE;
+
+$mainColor: #FFDE2E;
+$secondColor: $black;
 
 html,
 button,
 input,
 select,
 textarea {
+    background: $white;
     color: #222;
 }
 
@@ -16,12 +22,12 @@ body {
 }
 
 ::-moz-selection {
-    background: #b3d4fc;
+    background: $mainColor;
     text-shadow: none;
 }
 
 ::selection {
-    background: #b3d4fc;
+    background: $mainColor;
     text-shadow: none;
 }
 
@@ -74,22 +80,22 @@ body {
    =================== */
 
 .header-container {
-    border-bottom: 20px solid #56DDFF;
+    border-bottom: 20px solid $secondColor;
 }
 
 .footer-container,
 .main aside {
-    border-top: 20px solid #56DDFF;
+    border-top: 20px solid $secondColor;
 }
 
 .header-container,
 .footer-container,
 .main aside {
-    background: #b3d4fc;
+    background: $mainColor;
 }
 
 .title {
-    color: white;
+    color: $secondColor;
 }
 
 /* ==============
@@ -110,13 +116,13 @@ nav a {
     text-decoration: none;
     font-weight: bold;
 
-    color: white;
-    background: #56DDFF;
+    color: $white;
+    background: $secondColor;
 }
 
 nav a:hover,
 nav a:visited {
-    color: white;
+    color: $white;
 }
 
 nav a:hover {
@@ -136,12 +142,12 @@ nav a:hover {
 }
 
 .main aside {
-    color: white;
+    color: $white;
     padding: 0px 5% 10px;
 }
 
 .footer-container footer {
-    color: white;
+    color: $secondColor;
     padding: 20px 0;
 }
 
