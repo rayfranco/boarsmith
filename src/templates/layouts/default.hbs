@@ -26,7 +26,7 @@
 
         {{> footer.hbs}}
 
-        <!-- build:js /js/main.js -->
+        <!-- build:js {{assets}}js/main.js -->
         {{#each scripts.main}}
             <script src="{{assets}}/{{this}}" type="text/javascript"></script>
         {{/each}}

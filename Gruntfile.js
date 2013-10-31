@@ -178,6 +178,9 @@ module.exports = function(grunt) {
 
     useminPrepare: {
       html: '<%= path.build[env] %>**/*.html',
+      options: {
+        dest: '<%= path.build[env] %>'
+      }
     },
 
     usemin: {
@@ -271,7 +274,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', function () {
     if (env === 'prod') { // Prod build
-      return grunt.task.run(['clean:env','copy','concurrent:compile','useminPrepare','imagemin','uglify','usemin']);
+      return grunt.task.run(['clean:env','copy','concurrent:compile','useminPrepare','imagemin','concat','uglify','usemin']);
     } else { // Dev build
       return grunt.task.run(['clean:env','copy','concurrent:compile']);
     }
