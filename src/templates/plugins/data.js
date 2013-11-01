@@ -6,36 +6,47 @@
  */
 
 // Node.js
-var path  = require('path');
-var YAML  = require('js-yaml'); // Grunt dependency
+var YAML  = require('js-yaml');
 
-/**
- * @param  {Object}   config
- * @param  {Function} callback
- */
-module.exports = function(config, callback) {
+var options = {
+  stage: 'assemble:post:pages'
+};
+
+var plugin = function(params, callback) {
 
   'use strict';
 
-  var options    = config.context;
-  var grunt      = config.grunt;
-  var page       = options.page;
-  var pages      = options.pages;
-  var async      = grunt.util.async;
+  var converted = 0;
+
+  var pages = params.assemble.options.pages,
+      grunt = params.grunt,
+      async = grunt.util.async;
 
   async.forEach(pages, function(file, next) {
-      if (page.src !== file.src) {
-        return;
+
+      grunt.log.write('Converting to JSON '+ file.src.cyan);
+
+      try {
+        file.page = YAML.load(file.page);
+        file.page = JSON.stringify(file.page);
+
+        grunt.log.success(' OK');
+
+        converted += 1;
+
+        next();
       }
+      catch (e) {
+        grunt.log.error(' FAILED');
 
-      file.page = YAML.load(file.page);
-
-      next();
+        next();
+      }
   });
 
+  grunt.log.ok(converted+' pages converted.');
+
   callback();
-
-  console.log(pages)
-
-  return page;
 };
+
+plugin.options = options;
+module.exports = plugin;
